@@ -1,14 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import * as topojson from 'topojson-client'
 import 'leaflet/dist/leaflet.css'
 import topoData from '../maps/SL-l3.json'
+import { useMap } from '../context/MapContext'
 
 export default function Map() {
   const mapRef = useRef(null)
   const mapInstanceRef = useRef(null)
   const tileLayerRef = useRef(null)
-  const [showTileLayer, setShowTileLayer] = useState(false)
+  const { showTileLayer} = useMap()
 
   useEffect(() => {
     // Initialize the map only once
@@ -64,6 +65,7 @@ export default function Map() {
               layer.setStyle({
                 weight: 2,
                 color: '#666',
+                fillColor: '#f0f0f0',
                 dashArray: '',
                 fillOpacity: 0.7,
               })
@@ -73,6 +75,7 @@ export default function Map() {
               const layer = e.target
               layer.setStyle({
                 weight: 1,
+                fillColor: '#ffffff',
                 color: '#222222',
                 fillOpacity: 0.3,
               })
@@ -87,22 +90,21 @@ export default function Map() {
     }
   }, [])
 
-
-  // Toggle tile layer
-  const toggleTileLayer = () => {
+  // Effect to handle tile layer toggling
+  useEffect(() => {
     if (!mapInstanceRef.current || !tileLayerRef.current) return
     
     if (showTileLayer) {
-      mapInstanceRef.current.removeLayer(tileLayerRef.current)
-    } else {
       tileLayerRef.current.addTo(mapInstanceRef.current)
+    } else {
+      mapInstanceRef.current.removeLayer(tileLayerRef.current)
     }
-    setShowTileLayer(!showTileLayer)
-  }
+  }, [showTileLayer])
+
 
   return (
     <div 
-      className={`relative h-screen transition-all duration-300 w-[calc(100vw-320px)]`}
+      className={`relative h-screen transition-all duration-300`}
     >
       {/* Map Container */}
       <div 
@@ -110,13 +112,6 @@ export default function Map() {
         className="absolute inset-0 w-full h-full"
       />
       
-      {/* Floating Toggle Button */}
-      <button
-        onClick={toggleTileLayer}
-        className="absolute top-4 right-4 z-[1000] bg-white hover:bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 shadow-lg font-medium text-sm transition-colors"
-      >
-        {showTileLayer ? 'Hide Base Map' : 'Show Base Map'}
-      </button>
     </div>
   )
 }
