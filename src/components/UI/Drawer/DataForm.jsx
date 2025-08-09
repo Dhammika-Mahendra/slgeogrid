@@ -35,13 +35,13 @@ export default function DataForm() {
   // Memoize the unique ADM2 data to avoid recalculating on every render
   const admData = useMemo(() => {
     const admData = geoData.features.map(feature => ({
-      L2: feature.properties.L2
+      name: feature.properties.name
     }))
     
-    // Remove duplicates based on L2 and sort by L2
+    // Remove duplicates based on L2 and  sort by L2
     return admData.filter((item, index, self) =>
-      index === self.findIndex(t => t.L2 === item.L2)
-    ).sort((a, b) => a.L2.localeCompare(b.L2))
+      index === self.findIndex(t => t.name === item.name)
+    ).sort((a, b) => a.name.localeCompare(b.name))
   }, [])
 
   // Handler function to update input values
@@ -79,9 +79,9 @@ export default function DataForm() {
       <div className="space-y-4">
         {admData.map((item) => (
           <InputField
-            key={item.L2}
-            admName={item.L2}
-            value={inputValues[item.L2]}
+            key={item.name}
+            admName={item.name}
+            value={inputValues[item.name]}
             onChange={handleInputChange}
             admData={item}
           />

@@ -11,11 +11,11 @@ export default function Map() {
   const mapInstanceRef = useRef(null)
   const tileLayerRef = useRef(null)
   const geoJSONLayerRef = useRef(null)
-  const { showTileLayer, regionLevel } = useMap()
+  const { showTileLayer, regionLevel, regionData } = useMap()
 
   useEffect(() => {
-    // Initialize the map only once
-    if (!mapInstanceRef.current) {
+    // Only initialize the map when regionData is loaded and not empty
+    if (!mapInstanceRef.current && regionData && Object.keys(regionData).length > 0) {
       // Create the map instance
       mapInstanceRef.current = L.map(mapRef.current, {
         center: [7.8731, 80.7718], // Center of Sri Lanka
@@ -41,54 +41,29 @@ export default function Map() {
 
       // Initialize the map with the current region level
       const currentGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
+      const currentRegionData = regionData[regionLevel] || []
+      
       geoJSONLayerRef.current = L.geoJSON(currentGeoData, {
-        style: {
-          fillColor: '#ffffff',
-          weight: 0.5,
-          opacity: 1,
-          color: '#010101',
-          fillOpacity: 0.3,
-        },
-        onEachFeature: (feature, layer) => {
-          // Add popup if properties exist
-          if (feature.properties) {
-            const popupContent = Object.entries(feature.properties)
-              .map(([key, value]) => `<strong>${key}:</strong> ${value}`)
-              .join('<br>')
-            layer.bindPopup(popupContent)
-          }
+        style: (feature) => {
+          const featureName = feature.properties[regionLevel]
+          const regionEntry = currentRegionData.find(item => item.name === featureName)
+          const fillColor = regionEntry ? regionEntry.color : '#ffffff'
           
-          // Add hover effects
-          layer.on({
-            mouseover: (e) => {
-              const layer = e.target
-              layer.setStyle({
-                weight: 0.5,
-                color: '#010101',
-                fillColor: '#ffffff',
-                dashArray: '',
-                fillOpacity: 0.3,
-              })
-              layer.bringToFront()
-            },
-            mouseout: (e) => {
-              const layer = e.target
-              layer.setStyle({
-                weight: 0.5,
-                fillColor: '#ffffff',
-                color: '#010101',
-                fillOpacity: 0.3,
-              })
-            },
-          })
-        },
+          return {
+            fillColor: fillColor,
+            weight: 0.5,
+            opacity: 1,
+            color: '#010101',
+            fillOpacity: 0.7,
+          }
+        }
       }).addTo(mapInstanceRef.current)
 
       // Fit the map to the bounds of the GeoJSON data
       const bounds = L.geoJSON(currentGeoData).getBounds()
       mapInstanceRef.current.fitBounds(bounds)
     }
-  }, [])
+  }, [regionData])
 
   // Effect to handle tile layer toggling
   useEffect(() => {
@@ -107,15 +82,41 @@ export default function Map() {
 
     // Get the new GeoJSON data based on the region level
     const newGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
+    const currentRegionData = regionData[regionLevel] || []
 
     // Update the GeoJSON layer with new data
     geoJSONLayerRef.current.clearLayers()
     geoJSONLayerRef.current.addData(newGeoData)
+    
+    // Apply styling to the new data
+    geoJSONLayerRef.current.eachLayer((layer) => {
+      const feature = layer.feature
+      const featureName = feature.properties[regionLevel]
+      const regionEntry = currentRegionData.find(item => item.name === featureName)
+      const fillColor = regionEntry ? regionEntry.color : '#ffffff'
+      
+      layer.setStyle({
+        fillColor: fillColor,
+        weight: 0.5,
+        opacity: 1,
+        color: '#010101',
+        fillOpacity: 0.7,
+      })
+    })
 
     // Fit the map to the new bounds
     const bounds = L.geoJSON(newGeoData).getBounds()
     mapInstanceRef.current.fitBounds(bounds)
-  }, [regionLevel])
+  }, [regionLevel, regionData])
+
+  // Show loading indicator if regionData is not yet loaded
+  if (!regionData || Object.keys(regionData).length === 0) {
+    return (
+      <div className="relative h-screen flex items-center justify-center">
+        <p>Loading map data...</p>
+      </div>
+    )
+  }
 
   return (
     <div className={`relative h-screen transition-all duration-300`}>
