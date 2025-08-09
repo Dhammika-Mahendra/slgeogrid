@@ -1,23 +1,38 @@
 import React from 'react'
 import DataForm from './DataForm'
+import ColorScale from './ColorScale'
 
 export default function Drawer({ isDrawerOpen, toggleDrawer }) {
   return (
     <div>
     <div 
-        className={`p-3 fixed top-0 right-0 h-full bg-white border-l border-gray-300 shadow-lg transition-transform duration-300 ease-in-out z-[1001] ${
+        className={`fixed top-0 right-0 h-full bg-white border-l border-gray-300 shadow-lg transition-transform duration-300 ease-in-out z-[1001] flex flex-col ${
           isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ width: '600px' }}
       >
 
-
         {/* Drawer Content */}
-        <div className="p-4 h-full">
+        <div className="p-4 flex-1 flex overflow-hidden">
+          <ColorScale></ColorScale>
           <DataForm></DataForm>
         </div>
 
-        
+        {/* Button Panel */}
+        <div className="p-4 flex-shrink-0">
+          <div className="flex gap-3 justify-end">
+            <button className="px-4">
+              Clear
+            </button>
+            <button className="px-4">
+              Random
+            </button>
+            <button className="px-4">
+              OK
+            </button>
+          </div>
+        </div>
+
     </div>
 
 
