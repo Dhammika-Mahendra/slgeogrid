@@ -15,6 +15,8 @@ export const useMap = () => {
 // Create the provider component
 export const MapProvider = ({ children }) => {
   const [showTileLayer, setShowTileLayer] = useState(false)
+  const [regionLevel, setRegionLevel] = useState('ADM2_EN')
+  
   const toggleTileLayer = () => {
     setShowTileLayer(prev => !prev)
   }
@@ -23,6 +25,8 @@ export const MapProvider = ({ children }) => {
     showTileLayer,
     setShowTileLayer,
     toggleTileLayer,
+    regionLevel,
+    setRegionLevel,
   }
 
   return (

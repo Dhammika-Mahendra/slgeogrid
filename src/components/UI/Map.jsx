@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import geoData from '../maps/SL_L3.json'
+import geoData from '../maps/SL_L2.json'
 import { useMap } from '../context/MapContext'
 
 export default function Map() {
@@ -40,7 +40,7 @@ export default function Map() {
       L.geoJSON(geoData, {
         style: {
           fillColor: '#ffffff',
-          weight: 1,
+          weight: 0.5,
           opacity: 1,
           color: '#010101',
           fillOpacity: 0.3,
@@ -59,7 +59,7 @@ export default function Map() {
             mouseover: (e) => {
               const layer = e.target
               layer.setStyle({
-                weight: 1,
+                weight: 0.5,
                 color: '#010101',
                 fillColor: '#ffffff',
                 dashArray: '',
@@ -70,7 +70,7 @@ export default function Map() {
             mouseout: (e) => {
               const layer = e.target
               layer.setStyle({
-                weight: 1,
+                weight: 0.5,
                 fillColor: '#ffffff',
                 color: '#010101',
                 fillOpacity: 0.3,
