@@ -1,10 +1,11 @@
 import React from 'react'
+import DataForm from './DataForm'
 
 export default function Drawer({ isDrawerOpen, toggleDrawer }) {
   return (
     <div>
     <div 
-        className={`fixed top-0 right-0 h-full bg-white border-l border-gray-300 shadow-lg transition-transform duration-300 ease-in-out z-[1001] ${
+        className={`p-3 fixed top-0 right-0 h-full bg-white border-l border-gray-300 shadow-lg transition-transform duration-300 ease-in-out z-[1001] ${
           isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ width: '600px' }}
@@ -13,7 +14,7 @@ export default function Drawer({ isDrawerOpen, toggleDrawer }) {
 
         {/* Drawer Content */}
         <div className="p-4 h-full">
-          <h5>Drawer</h5>
+          <DataForm></DataForm>
         </div>
 
         

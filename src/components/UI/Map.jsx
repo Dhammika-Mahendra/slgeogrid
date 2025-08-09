@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
-import * as topojson from 'topojson-client'
 import 'leaflet/dist/leaflet.css'
-import topoData from '../maps/SL-l3.json'
+import geoData from '../maps/SL_L3.json'
 import { useMap } from '../context/MapContext'
 
 export default function Map() {
@@ -37,16 +36,13 @@ export default function Map() {
         maxZoom: 18,
       })
 
-      // Convert TopoJSON to GeoJSON
-      const geoData = topojson.feature(topoData, topoData.objects.lka_admbnda_adm3_slsd_20220816)
-
       // Add the GeoJSON layer to the map
       L.geoJSON(geoData, {
         style: {
           fillColor: '#ffffff',
           weight: 1,
           opacity: 1,
-          color: '#222222',
+          color: '#010101',
           fillOpacity: 0.3,
         },
         onEachFeature: (feature, layer) => {
@@ -63,11 +59,11 @@ export default function Map() {
             mouseover: (e) => {
               const layer = e.target
               layer.setStyle({
-                weight: 2,
-                color: '#666',
-                fillColor: '#f0f0f0',
+                weight: 1,
+                color: '#010101',
+                fillColor: '#ffffff',
                 dashArray: '',
-                fillOpacity: 0.7,
+                fillOpacity: 0.3,
               })
               layer.bringToFront()
             },
@@ -76,7 +72,7 @@ export default function Map() {
               layer.setStyle({
                 weight: 1,
                 fillColor: '#ffffff',
-                color: '#222222',
+                color: '#010101',
                 fillOpacity: 0.3,
               })
             },
