@@ -25,17 +25,17 @@ export const MapProvider = ({ children }) => {
   useEffect(() => {
     const initializedRegionData = {
       'L1': L1Data.features.map(feature => ({
-        name: feature.properties.L1,
+        name: feature.properties.name,
         value: 0,
         color: "#FFFFFF"
       })),
       'L2': L2Data.features.map(feature => ({
-        name: feature.properties.L2,
+        name: feature.properties.name,
         value: 0,
         color: "#FFFFFF"
       })),
       'L3': L3Data.features.map(feature => ({
-        name: feature.properties.L3,
+        name: feature.properties.name,
         value: 0,
         color: "#FFFFFF"
       }))

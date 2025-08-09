@@ -19,7 +19,7 @@ export default function Map() {
       // Create the map instance
       mapInstanceRef.current = L.map(mapRef.current, {
         center: [7.8731, 80.7718], // Center of Sri Lanka
-        zoom: 7,
+        zoom: 10,
         zoomControl: false, // Remove zoom control buttons
         dragging: true,
         touchZoom: true,

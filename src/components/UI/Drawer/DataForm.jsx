@@ -1,61 +1,33 @@
-import { useState, useCallback, useMemo, memo } from 'react'
-import geoData from '../../maps/L2.json'
 import { useMap } from '../../context/MapContext'
-
-// Create a memoized input field component to prevent unnecessary re-renders
-const InputField = memo(({ admName, value, onChange, admData }) => {
-  return (
-    <div className="flex flex-col">
-      <label 
-        htmlFor={`input-${admName}`}
-        className="text-sm font-medium text-gray-700 mb-1"
-      >
-        <div className="font-semibold">{admName}</div>
-      </label>
-      <input
-        id={`input-${admName}`}
-        type="number"
-        value={value || ''}
-        onChange={(e) => onChange(admName, e.target.value)}
-        className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-      />
-    </div>
-  )
-})
-
-InputField.displayName = 'InputField'
+import { useState, useEffect } from 'react'
 
 export default function DataForm() {
-  // Get region level from context
-  const { regionLevel, setRegionLevel } = useMap()
-  
-  // State to store all input values
-  const [inputValues, setInputValues] = useState({})
+   const { regionLevel, setRegionLevel, regionData } = useMap()
+   const [inputData, setInputData] = useState({})
 
-  // Memoize the unique ADM2 data to avoid recalculating on every render
-  const admData = useMemo(() => {
-    const admData = geoData.features.map(feature => ({
-      name: feature.properties.name
-    }))
-    
-    // Remove duplicates based on L2 and  sort by L2
-    return admData.filter((item, index, self) =>
-      index === self.findIndex(t => t.name === item.name)
-    ).sort((a, b) => a.name.localeCompare(b.name))
-  }, [])
+   // Update local input data when regionLevel or regionData changes
+   useEffect(() => {
+     if (regionData[regionLevel]) {
+       const initialData = {}
+       regionData[regionLevel].forEach((region) => {
+         initialData[region.name] = region.value
+       })
+       setInputData(initialData)
+     }
+   }, [regionLevel, regionData])
 
-  // Handler function to update input values
-  const handleInputChange = useCallback((admName, value) => {
-    setInputValues(prevValues => ({
-      ...prevValues,
-      [admName]: value
-    }))
-  }, [])
+   // Handle input changes
+   const handleInputChange = (name, value) => {
+     setInputData(prev => ({
+       ...prev,
+       [name]: parseFloat(value) || 0
+     }))
+   }
 
   return (
-    <div className="h-full overflow-y-auto p-4">
+    <div>
 
-      { /* Region level selction dropdown*/}
+    { /* Region level selction dropdown*/}
       <div className="mb-4">
         <label 
           htmlFor="region-select"
@@ -75,17 +47,29 @@ export default function DataForm() {
         </select>
       </div>
 
-      { /* Input fields*/}
-      <div className="space-y-4">
-        {admData.map((item) => (
-          <InputField
-            key={item.name}
-            admName={item.name}
-            value={inputValues[item.name]}
-            onChange={handleInputChange}
-            admData={item}
-          />
-        ))}
+
+      {/* Region data input fields */}
+      <div className="mb-4">
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          {regionData[regionLevel]?.map((region, index) => (
+            <div key={region.name} className="flex flex-col">
+              <label 
+                htmlFor={`region-${region.name}`}
+                className="block text-xs font-medium text-gray-600 mb-1"
+              >
+                {region.name}
+              </label>
+              <input
+                id={`region-${region.name}`}
+                type="number"
+                value={inputData[region.name] || ''}
+                onChange={(e) => handleInputChange(region.name, e.target.value)}
+                placeholder="Enter value"
+                className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
