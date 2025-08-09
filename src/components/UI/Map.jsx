@@ -1,14 +1,17 @@
 import React, { useEffect, useRef } from 'react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import geoData from '../maps/SL_L2.json'
+import L1Data from '../maps/L1.json'
+import L2Data from '../maps/L2.json'
+import L3Data from '../maps/L3.json'
 import { useMap } from '../context/MapContext'
 
 export default function Map() {
   const mapRef = useRef(null)
   const mapInstanceRef = useRef(null)
   const tileLayerRef = useRef(null)
-  const { showTileLayer} = useMap()
+  const geoJSONLayerRef = useRef(null)
+  const { showTileLayer, regionLevel } = useMap()
 
   useEffect(() => {
     // Initialize the map only once
@@ -36,8 +39,9 @@ export default function Map() {
         maxZoom: 18,
       })
 
-      // Add the GeoJSON layer to the map
-      L.geoJSON(geoData, {
+      // Initialize the map with the current region level
+      const currentGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
+      geoJSONLayerRef.current = L.geoJSON(currentGeoData, {
         style: {
           fillColor: '#ffffff',
           weight: 0.5,
@@ -81,7 +85,7 @@ export default function Map() {
       }).addTo(mapInstanceRef.current)
 
       // Fit the map to the bounds of the GeoJSON data
-      const bounds = L.geoJSON(geoData).getBounds()
+      const bounds = L.geoJSON(currentGeoData).getBounds()
       mapInstanceRef.current.fitBounds(bounds)
     }
   }, [])
@@ -97,17 +101,25 @@ export default function Map() {
     }
   }, [showTileLayer])
 
+  // Effect to handle region level changes
+  useEffect(() => {
+    if (!mapInstanceRef.current || !geoJSONLayerRef.current) return
+
+    // Get the new GeoJSON data based on the region level
+    const newGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
+
+    // Update the GeoJSON layer with new data
+    geoJSONLayerRef.current.clearLayers()
+    geoJSONLayerRef.current.addData(newGeoData)
+
+    // Fit the map to the new bounds
+    const bounds = L.geoJSON(newGeoData).getBounds()
+    mapInstanceRef.current.fitBounds(bounds)
+  }, [regionLevel])
 
   return (
-    <div 
-      className={`relative h-screen transition-all duration-300`}
-    >
-      {/* Map Container */}
-      <div 
-        ref={mapRef} 
-        className="absolute inset-0 w-full h-full"
-      />
-      
+    <div className={`relative h-screen transition-all duration-300`}>
+      <div ref={mapRef} className="absolute inset-0 w-full h-full"/> 
     </div>
   )
 }
