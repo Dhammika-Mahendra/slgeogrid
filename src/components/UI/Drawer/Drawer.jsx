@@ -18,21 +18,6 @@ export default function Drawer({ isDrawerOpen, toggleDrawer }) {
           <DataForm></DataForm>
         </div>
 
-        {/* Button Panel */}
-        <div className="p-4 flex-shrink-0">
-          <div className="flex gap-3 justify-end">
-            <button className="px-4">
-              Clear
-            </button>
-            <button className="px-4">
-              Random
-            </button>
-            <button className="px-4">
-              OK
-            </button>
-          </div>
-        </div>
-
     </div>
 
 

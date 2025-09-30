@@ -2,7 +2,7 @@ import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
 
 export default function DataForm() {
-   const { regionLevel, setRegionLevel, regionData } = useMap()
+   const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
    // Update local input data when regionLevel or regionData changes
@@ -21,6 +21,17 @@ export default function DataForm() {
      setInputData(prev => ({
        ...prev,
        [name]: parseFloat(value) || 0
+     }))
+   }
+
+   // Handle OK button press - update regionData with inputData values
+   const handleSubmit = () => {
+     setRegionData(prevRegionData => ({
+       ...prevRegionData,
+       [regionLevel]: prevRegionData[regionLevel].map(region => ({
+         ...region,
+         value: inputData[region.name] || 0
+       }))
      }))
    }
 
@@ -71,6 +82,25 @@ export default function DataForm() {
           ))}
         </div>
       </div>
+
+      {/* Button Panel */}
+      <div className="p-4 flex-shrink-0">
+        <div className="flex gap-3 justify-end">
+          <button className="px-4">
+            Clear
+          </button>
+          <button className="px-4">
+            Random
+          </button>
+          <button 
+            className="px-4"
+            onClick={handleSubmit}
+          >
+            OK
+          </button>
+        </div>
+      </div>
+
     </div>
   )
 }
