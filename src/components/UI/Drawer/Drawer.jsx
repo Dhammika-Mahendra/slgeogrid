@@ -2,15 +2,12 @@ import React from 'react'
 import DataForm from './DataForm'
 import ColorScale from './ColorScale'
 
-export default function Drawer({ isDrawerOpen, toggleDrawer }) {
+export default function Drawer() {
   return (
-    <div>
+    <div className="w-full">
     <div 
-        className={`fixed top-0 right-0 h-full bg-white border-l border-gray-300 shadow-lg transition-transform duration-300 ease-in-out z-[1001] flex flex-col ${
-          isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{ width: '600px' }}
-      >
+      className='w-full h-full bg-white border-l border-gray-300 shadow-lg flex flex-col'  
+    >
 
         {/* Drawer Content */}
         <div className="p-4 flex-1 flex overflow-hidden">
@@ -20,27 +17,6 @@ export default function Drawer({ isDrawerOpen, toggleDrawer }) {
 
     </div>
 
-
-
-
-      {/* Drawer Toggle Button */}
-      <button
-        onClick={toggleDrawer}
-        className={`fixed top-1/2 -translate-y-1/2 bg-white hover:bg-gray-50 border border-gray-300 shadow-lg px-3 py-6 z-[1002] transition-all duration-300 ease-in-out ${
-          isDrawerOpen ? 'right-[600px]' : 'right-0'
-        } rounded-l-lg`}
-      >
-        <div className="flex flex-col items-center">
-          <svg 
-            className={`w-4 h-4 transition-transform duration-300 ${isDrawerOpen ? '' : 'rotate-180'}`}
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </button>
     </div>
   )
 }

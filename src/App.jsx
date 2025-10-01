@@ -6,26 +6,21 @@ import { MapProvider } from './components/context/MapContext'
 import Options from './components/UI/Options/Options'
 
 function App() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen)
-  }
 
   return (
     <MapProvider>
-      <div className="relative">
-
-        {/* Main Content */}
-        <div className="w-full">
-          <Map/>
-        </div>
+      <div className="relative flex">
 
         {/* Left Side Floating Element */}
         <Options />
 
+        {/* Main Content */}
+        <div className="w-[90%] h-screen">
+          <Map/>
+        </div>
+        
         {/* Drawer */}
-        <Drawer isDrawerOpen={isDrawerOpen} toggleDrawer={toggleDrawer} />
+        <Drawer className="flex-1 h-screen"/>
 
       </div>
     </MapProvider>

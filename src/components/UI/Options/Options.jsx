@@ -8,7 +8,7 @@ export default function Options() {
 
   return (
     <div 
-    className="fixed top-0 left-0 h-screen bg-white border-r border-gray-300 shadow-lg z-[1001]"
+    className="h-screen bg-white border-r border-gray-300 shadow-lg "
     style={{ width: '50px' }}
     >
     {/* Content for the left floating element can be added here */}
@@ -20,6 +20,7 @@ export default function Options() {
       tooltip={showTileLayer ? 'Hide Base Map' : 'Show Base Map'}
       className="w-7 h-7"
     />
+
     </div>
   )
 }

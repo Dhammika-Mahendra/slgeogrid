@@ -1,5 +1,6 @@
 import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
+import ConfirmBox from '../common/ConfirmBox'
 
 export default function DataForm() {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
@@ -86,20 +87,22 @@ export default function DataForm() {
       {/* Button Panel */}
       <div className="p-4 flex-shrink-0">
         <div className="flex gap-3 justify-end">
-          <button className="px-4">
+          <button className="btn btn-sm btn-soft px-4">
             Clear
           </button>
-          <button className="px-4">
+          <button className="btn btn-sm btn-soft px-4">
             Random
           </button>
           <button 
-            className="px-4"
+            className="btn btn-sm btn-success px-4"
             onClick={handleSubmit}
           >
             OK
           </button>
         </div>
       </div>
+
+
 
     </div>
   )
