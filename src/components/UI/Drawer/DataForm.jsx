@@ -1,12 +1,20 @@
 import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
-import ConfirmBox from '../common/ConfirmBox'
+import AlertBox from '../common/AlertBox'
 
 export default function DataForm() {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
-   // Update local input data when regionLevel or regionData changes
+   const [isVisible, setIsVisible] = useState(false)//set alert box visibility
+   const [msg, setMsg] = useState("")//alert box message
+   const [functionExec, setFunctionExec] = useState(null)//function to execute on alert confirmation
+
+  //--------------------------------------------------------
+  //     Map data object ops
+  //--------------------------------------------------------
+
+  // Update local input data when regionLevel or regionData changes
    useEffect(() => {
      if (regionData[regionLevel]) {
        const initialData = {}
@@ -17,7 +25,7 @@ export default function DataForm() {
      }
    }, [regionLevel, regionData])
 
-   // Handle input changes
+  // Handle input changes
    const handleInputChange = (name, value) => {
      setInputData(prev => ({
        ...prev,
@@ -25,7 +33,9 @@ export default function DataForm() {
      }))
    }
 
-   // Handle OK button press - update regionData with inputData values
+  //--------------------------------------------------------
+  //     Button Handlers
+  //--------------------------------------------------------
    const handleSubmit = () => {
      setRegionData(prevRegionData => ({
        ...prevRegionData,
@@ -34,6 +44,18 @@ export default function DataForm() {
          value: inputData[region.name] || 0
        }))
      }))
+   }
+
+   const handleClear = () => {
+    setIsVisible(true)
+    setMsg("Are you sure you want to clear all data?")
+    setFunctionExec(()=>()=>console.log("Confirmed clear"))
+   }
+
+   const handleRandom = () => {
+    setIsVisible(true)
+    setMsg("Are you sure you want to fill random data?")
+    setFunctionExec(()=>()=>console.log("Confirmed random"))
    }
 
   return (
@@ -87,10 +109,13 @@ export default function DataForm() {
       {/* Button Panel */}
       <div className="p-4 flex-shrink-0">
         <div className="flex gap-3 justify-end">
-          <button className="btn btn-sm btn-soft px-4">
+          <button className="btn btn-sm btn-soft px-4"
+            onClick={handleClear}>
             Clear
           </button>
-          <button className="btn btn-sm btn-soft px-4">
+          <button className="btn btn-sm btn-soft px-4"
+           onClick={handleRandom}
+          >
             Random
           </button>
           <button 
@@ -99,9 +124,12 @@ export default function DataForm() {
           >
             OK
           </button>
+
+
+          { /* Alert Box Component */}
+          <AlertBox isVisible={isVisible} setIsVisible={setIsVisible} msg={msg} functionExec={functionExec} />
         </div>
       </div>
-
 
 
     </div>

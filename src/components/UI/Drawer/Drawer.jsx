@@ -14,6 +14,7 @@ export default function Drawer() {
           <ColorScale></ColorScale>
           <DataForm></DataForm>
         </div>
+      
 
     </div>
 
