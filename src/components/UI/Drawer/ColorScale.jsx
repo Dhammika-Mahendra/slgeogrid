@@ -18,7 +18,7 @@ export default function ColorScale() {
     }
 
     return (
-        <div style={{ height: '90%', display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ height: '90%', marginRight:'20px', display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center' }}>
 
             {/* Max value */}
             <input

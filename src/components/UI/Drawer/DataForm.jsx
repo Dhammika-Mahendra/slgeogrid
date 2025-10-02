@@ -49,7 +49,15 @@ export default function DataForm() {
    const handleClear = () => {
     setIsVisible(true)
     setMsg("Are you sure you want to clear all data?")
-    setFunctionExec(()=>()=>console.log("Confirmed clear"))
+    setFunctionExec(()=>()=>
+      setRegionData(prevRegionData => ({
+       ...prevRegionData,
+       [regionLevel]: prevRegionData[regionLevel].map(region => ({
+         ...region,
+         value: 0
+       }))
+     }))
+    )
    }
 
    const handleRandom = () => {
@@ -59,7 +67,7 @@ export default function DataForm() {
    }
 
   return (
-    <div>
+    <div className="w-[50%] h-full flex flex-col">
 
     { /* Region level selction dropdown*/}
       <div className="mb-4">
@@ -83,28 +91,27 @@ export default function DataForm() {
 
 
       {/* Region data input fields */}
-      <div className="mb-4">
-        <div className="space-y-3 max-h-96 overflow-y-auto">
-          {regionData[regionLevel]?.map((region, index) => (
-            <div key={region.name} className="flex flex-col">
-              <label 
-                htmlFor={`region-${region.name}`}
-                className="block text-xs font-medium text-gray-600 mb-1"
-              >
-                {region.name}
-              </label>
-              <input
-                id={`region-${region.name}`}
-                type="number"
-                value={inputData[region.name] || ''}
-                onChange={(e) => handleInputChange(region.name, e.target.value)}
-                placeholder="Enter value"
-                className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
-              />
-            </div>
-          ))}
-        </div>
+      <div className="space-y-3 flex-grow overflow-y-auto">
+        {regionData[regionLevel]?.map((region, index) => (
+          <div key={region.name} className="flex flex-col">
+            <label 
+              htmlFor={`region-${region.name}`}
+              className="block text-xs font-medium text-gray-600 mb-1"
+            >
+              {region.name}
+            </label>
+            <input
+              id={`region-${region.name}`}
+              type="number"
+              value={inputData[region.name] || ''}
+              onChange={(e) => handleInputChange(region.name, e.target.value)}
+              placeholder="Enter value"
+              className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
+            />
+          </div>
+        ))}
       </div>
+
 
       {/* Button Panel */}
       <div className="p-4 flex-shrink-0">

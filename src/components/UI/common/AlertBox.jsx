@@ -5,6 +5,16 @@ export default function AlertBox({isVisible, setIsVisible,msg,functionExec}) {
     const showAlert = () => setIsVisible(true)
     const hideAlert = () => setIsVisible(false)
 
+    const handleYesClick = async () => {
+        try {
+            await Promise.resolve(functionExec())
+        } catch (error) {
+            console.error('Error executing function:', error)
+        } finally {
+            hideAlert()
+        }
+    }
+
     return (
         <>
             {isVisible && (
@@ -40,7 +50,7 @@ export default function AlertBox({isVisible, setIsVisible,msg,functionExec}) {
                     >
                         <p>{msg}</p>
                         <div>
-                            <button className="btn btn-sm btn-warning px-4" onClick={functionExec}>Yes</button>
+                            <button className="btn btn-sm btn-warning px-4" onClick={handleYesClick}>Yes</button>
                             <button className="btn btn-sm btn-soft px-4" onClick={hideAlert}>No</button>
                         </div>
                     </div>
