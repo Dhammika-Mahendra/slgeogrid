@@ -1,8 +1,9 @@
 import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
 import AlertBox from '../common/AlertBox'
+import { getRandomInt } from '../../utils/functions'
 
-export default function DataForm() {
+export default function DataForm({min, max}) {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
@@ -63,7 +64,15 @@ export default function DataForm() {
    const handleRandom = () => {
     setIsVisible(true)
     setMsg("Are you sure you want to fill random data?")
-    setFunctionExec(()=>()=>console.log("Confirmed random"))
+    setFunctionExec(()=>()=>
+      setRegionData(prevRegionData => ({
+        ...prevRegionData,
+        [regionLevel]: prevRegionData[regionLevel].map(region => ({
+          ...region,
+          value: getRandomInt(min, max)
+        }))
+      }))
+    )
    }
 
   return (

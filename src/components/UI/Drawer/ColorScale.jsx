@@ -1,14 +1,6 @@
 import React from 'react'
 
-export default function ColorScale() {
-    const [colorScale, setColorScale] = React.useState(
-        {
-            minValue: 0,
-            maxValue: 100,
-            minColor: '#0000ff',
-            maxColor: '#ff0000'
-        }
-    )
+export default function ColorScale({colorScale, setColorScale}) {
 
     const updateColorScale = (field, value) => {
         setColorScale(prev => ({
