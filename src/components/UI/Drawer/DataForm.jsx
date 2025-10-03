@@ -1,9 +1,9 @@
 import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
 import AlertBox from '../common/AlertBox'
-import { getRandomInt } from '../../utils/functions'
+import { getRandomInt, interpolateColor } from '../../utils/functions'
 
-export default function DataForm({min, max}) {
+export default function DataForm({min, max, minColor, maxColor}) {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
@@ -42,7 +42,8 @@ export default function DataForm({min, max}) {
        ...prevRegionData,
        [regionLevel]: prevRegionData[regionLevel].map(region => ({
          ...region,
-         value: inputData[region.name] || 0
+         value: inputData[region.name] || 0,
+         color: interpolateColor(minColor, maxColor, min, max, inputData[region.name] || 0)
        }))
      }))
    }
@@ -66,11 +67,15 @@ export default function DataForm({min, max}) {
     setMsg("Are you sure you want to fill random data?")
     setFunctionExec(()=>()=>
       setRegionData(prevRegionData => ({
-        ...prevRegionData,
-        [regionLevel]: prevRegionData[regionLevel].map(region => ({
-          ...region,
-          value: getRandomInt(min, max)
-        }))
+      ...prevRegionData,
+      [regionLevel]: prevRegionData[regionLevel].map(region => {
+        const randomValue = getRandomInt(min, max)
+        return {
+        ...region,
+        value: randomValue,
+        color: interpolateColor(minColor, maxColor, min, max, randomValue)
+        }
+      })
       }))
     )
    }

@@ -43,9 +43,11 @@ export default function Map() {
       const currentGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
       const currentRegionData = regionData[regionLevel] || []
       
+      console.log("map rendering")
+
       geoJSONLayerRef.current = L.geoJSON(currentGeoData, {
         style: (feature) => {
-          const featureName = feature.properties[regionLevel]
+          const featureName = feature.properties.name
           const regionEntry = currentRegionData.find(item => item.name === featureName)
           const fillColor = regionEntry ? regionEntry.color : '#ffffff'
           
@@ -91,7 +93,7 @@ export default function Map() {
     // Apply styling to the new data
     geoJSONLayerRef.current.eachLayer((layer) => {
       const feature = layer.feature
-      const featureName = feature.properties[regionLevel]
+      const featureName = feature.properties.name
       const regionEntry = currentRegionData.find(item => item.name === featureName)
       const fillColor = regionEntry ? regionEntry.color : '#ffffff'
       
@@ -107,7 +109,30 @@ export default function Map() {
     // Fit the map to the new bounds
     const bounds = L.geoJSON(newGeoData).getBounds()
     mapInstanceRef.current.fitBounds(bounds)
-  }, [regionLevel, regionData])
+  }, [regionLevel])
+
+  // Effect to handle regionData changes (colors, values) without changing the region level
+  useEffect(() => {
+    if (!mapInstanceRef.current || !geoJSONLayerRef.current) return
+
+    const currentRegionData = regionData[regionLevel] || []
+    
+    // Update only the styling when regionData changes
+    geoJSONLayerRef.current.eachLayer((layer) => {
+      const feature = layer.feature
+      const featureName = feature.properties.name
+      const regionEntry = currentRegionData.find(item => item.name === featureName)
+      const fillColor = regionEntry ? regionEntry.color : '#ffffff'
+      
+      layer.setStyle({
+        fillColor: fillColor,
+        weight: 0.5,
+        opacity: 1,
+        color: '#010101',
+        fillOpacity: 0.7,
+      })
+    })
+  }, [regionData, regionLevel])
 
   // Show loading indicator if regionData is not yet loaded
   if (!regionData || Object.keys(regionData).length === 0) {
