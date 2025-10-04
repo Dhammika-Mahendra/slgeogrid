@@ -11,7 +11,31 @@ export default function Map() {
   const mapInstanceRef = useRef(null)
   const tileLayerRef = useRef(null)
   const geoJSONLayerRef = useRef(null)
-  const { showTileLayer, regionLevel, regionData } = useMap()
+  const { showTileLayer, regionLevel, regionData, setRegionData } = useMap()
+
+  // Initialize regionData (where data is stored) with objects from the GeoJSON files
+  useEffect(() => {
+    const initializedRegionData = {
+      'L1': L1Data.features.map(feature => ({
+        name: feature.properties.name,
+        value: 0,
+        color: "#FFFFFF"
+      })),
+      'L2': L2Data.features.map(feature => ({
+        name: feature.properties.name,
+        value: 0,
+        color: "#FFFFFF"
+      })),
+      'L3': L3Data.features.map(feature => ({
+        name: feature.properties.name,
+        value: 0,
+        color: "#FFFFFF"
+      }))
+    };
+    
+    setRegionData(initializedRegionData);
+  }, []);
+  
 
   useEffect(() => {
     // Only initialize the map when regionData is loaded and not empty
@@ -43,7 +67,6 @@ export default function Map() {
       const currentGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
       const currentRegionData = regionData[regionLevel] || []
       
-      console.log("map rendering")
 
       geoJSONLayerRef.current = L.geoJSON(currentGeoData, {
         style: (feature) => {

@@ -9,7 +9,9 @@ export default function Drawer() {
           minValue: 0,
           maxValue: 100,
           minColor: '#0000ff',
-          maxColor: '#ff0000'
+          maxColor: '#ff0000',
+          grouped: false,
+          groups: 2
       }
   )
 

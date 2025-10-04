@@ -1,7 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import L1Data from '../maps/L1.json'
-import L2Data from '../maps/L2.json'
-import L3Data from '../maps/L3.json'
+import { createContext, useContext, useState } from 'react'
+
 
 // Create the context
 const MapContext = createContext()
@@ -21,28 +19,6 @@ export const MapProvider = ({ children }) => {
   const [regionLevel, setRegionLevel] = useState('L2')
   const [regionData, setRegionData] = useState({})
   
-  // Initialize regionData with objects from the GeoJSON files
-  useEffect(() => {
-    const initializedRegionData = {
-      'L1': L1Data.features.map(feature => ({
-        name: feature.properties.name,
-        value: 0,
-        color: "#FFFFFF"
-      })),
-      'L2': L2Data.features.map(feature => ({
-        name: feature.properties.name,
-        value: 0,
-        color: "#FFFFFF"
-      })),
-      'L3': L3Data.features.map(feature => ({
-        name: feature.properties.name,
-        value: 0,
-        color: "#FFFFFF"
-      }))
-    };
-    
-    setRegionData(initializedRegionData);
-  }, []);
   
   const toggleTileLayer = () => {
     setShowTileLayer(prev => !prev)

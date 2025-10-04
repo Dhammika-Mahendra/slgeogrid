@@ -53,6 +53,25 @@ export default function ColorScale({colorScale, setColorScale}) {
                 onChange={(e) => updateColorScale('minValue', parseFloat(e.target.value) || 0)}
                 style={{ width: '50px'}}
             />
+
+            {/* Grouping options */}
+            <input
+                type="checkbox"
+                checked={colorScale.grouped}
+                onChange={(e) => updateColorScale('grouped', e.target.checked)}
+            />
+
+            {colorScale.grouped ?
+             <input
+                type="number"
+                value={colorScale.groups}
+                onChange={(e) => updateColorScale('groups', parseInt(e.target.value) || 2)}
+                style={{ width: '50px'}}
+                min={1}
+            />:
+            <br />
+            }
+
         </div>
     )
 }
