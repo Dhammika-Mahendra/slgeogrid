@@ -2,25 +2,27 @@ import React from 'react';
 import { Bar } from '@visx/shape';
 import { Group } from '@visx/group';
 import { scaleBand, scaleLinear } from '@visx/scale';
-
-// Dummy data with 10 records
-const data = [
-  { label: 'Item 1', value: 85, color: '#3b82f6' },
-  { label: 'Item 2', value: 42, color: '#ef4444' },
-  { label: 'Item 3', value: 78, color: '#10b981' },
-  { label: 'Item 4', value: 63, color: '#f59e0b' },
-  { label: 'Item 5', value: 91, color: '#8b5cf6' },
-  { label: 'Item 6', value: 34, color: '#06b6d4' },
-  { label: 'Item 7', value: 67, color: '#f97316' },
-  { label: 'Item 8', value: 89, color: '#84cc16' },
-  { label: 'Item 9', value: 45, color: '#ec4899' },
-  { label: 'Item 10', value: 72, color: '#6366f1' }
-];
+import { useMap } from '../../context/MapContext';
 
 export default function Chart() {
+
   const width = 150;
-  const height = 300;
+  const height = 500;
   const margin = { top: 20, right: 10, bottom: 20, left: 60 };
+
+  const [data, setData] = React.useState([]);
+  const { regionData, regionLevel} = useMap()
+
+  // Update data when regionData or regionLevel changes
+  React.useEffect(() => {
+    if (regionData && regionData[regionLevel]) {
+      const currentRegionData = regionData[regionLevel];
+      // Sort by value in descending order
+      const sortedData = [...currentRegionData].sort((a, b) => b.value - a.value);
+      setData(sortedData);
+    }
+  }, [regionData, regionLevel]);
+
 
   // Chart dimensions
   const xMax = width - margin.left - margin.right;
@@ -29,13 +31,13 @@ export default function Chart() {
   // Scales
   const yScale = scaleBand({
     range: [0, yMax],
-    domain: data.map(d => d.label),
+    domain: data.map(d => d.name),
     padding: 0.1,
   });
 
   const xScale = scaleLinear({
     range: [0, xMax],
-    domain: [0, 100],
+    domain: [0, Math.max(...data.map(d => d.value), 0)],
   });
 
   return (
@@ -45,7 +47,7 @@ export default function Chart() {
           {data.map((d, i) => {
             const barHeight = 10; // Fixed bar width (thickness) of 10px
             const barWidth = xScale(d.value); // Length based on data value
-            const barY = yScale(d.label);
+            const barY = yScale(d.name);
             
             return (
               <Group key={`bar-${i}`}>
@@ -58,7 +60,7 @@ export default function Chart() {
                   fill={d.color}
                   rx={2}
                 />
-                {/* Y-axis label (smaller font) */}
+                {/* Y-axis name (smaller font) */}
                 <text
                   x={-5}
                   y={barY + barHeight / 2}
@@ -67,7 +69,7 @@ export default function Chart() {
                   fontSize="10px"
                   fill="#374151"
                 >
-                  {d.label}
+                  {d.name}
                 </text>
               </Group>
             );
