@@ -93,3 +93,39 @@ export function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
+
+//-----------------------------------------------------------------------------
+//                Gradient color scale generation
+//-----------------------------------------------------------------------------
+
+export function groupColorScale(minColor, maxColor, groups) {
+  // Validate inputs
+  if (!minColor || !maxColor || !groups || isNaN(groups)) return '';
+  groups = Math.max(1, Math.floor(groups));
+
+  // Single color -> simple solid band via gradient
+  if (groups === 1) {
+    return `linear-gradient(to top, ${minColor} 0%, ${minColor} 100%)`;
+  }
+
+  // Generate the list of evenly spaced colors (including endpoints)
+  const colors = [];
+  for (let i = 0; i < groups; i++) {
+    const factor = i / (groups - 1); // 0 .. 1
+    colors.push(interpolateHexColor(minColor, maxColor, factor));
+  }
+
+  // Each color occupies an equal segment of the band. Use hard stops by
+  // repeating each color at the segment's start and end.
+  const segmentSize = 100 / groups;
+  const stops = [];
+
+  for (let i = 0; i < groups; i++) {
+    const start = +(segmentSize * i).toFixed(4);
+    const end = +((segmentSize * (i + 1)).toFixed(4));
+    stops.push(`${colors[i]} ${start}%`);
+    stops.push(`${colors[i]} ${end}%`);
+  }
+
+  return `linear-gradient(to top, ${stops.join(', ')})`;
+}

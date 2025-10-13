@@ -1,4 +1,5 @@
 import React from 'react'
+import { groupColorScale } from '../../utils/functions'
 
 export default function ColorScale({colorScale, setColorScale}) {
 
@@ -33,11 +34,13 @@ export default function ColorScale({colorScale, setColorScale}) {
                 style={{
                     width: '20px',
                     flex: 1,
-                    background: `linear-gradient(to bottom, ${colorScale.maxColor}, ${colorScale.minColor})`,
+                    background: colorScale.grouped
+                        ? groupColorScale(colorScale.minColor, colorScale.maxColor, colorScale.groups)
+                        : `linear-gradient(to bottom, ${colorScale.maxColor}, ${colorScale.minColor})`,
                     margin: '2px 0'
                 }}
             />
-            
+                        
             {/* Min color selector */}
             <input
                 type="color"
