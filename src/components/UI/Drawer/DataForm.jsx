@@ -1,9 +1,9 @@
 import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
 import AlertBox from '../common/AlertBox'
-import { getRandomInt, interpolateColor } from '../../utils/functions'
+import { getRandomInt, interpolateColor, interpolateGroupColor } from '../../utils/functions'
 
-export default function DataForm({min, max, minColor, maxColor}) {
+export default function DataForm({min, max, minColor, maxColor, grouped, groups}) {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
@@ -43,7 +43,7 @@ export default function DataForm({min, max, minColor, maxColor}) {
        [regionLevel]: prevRegionData[regionLevel].map(region => ({
          ...region,
          value: inputData[region.name] || 0,
-         color: interpolateColor(minColor, maxColor, min, max, inputData[region.name] || 0)
+         color: !grouped ? interpolateColor(minColor, maxColor, min, max, inputData[region.name] || 0) : interpolateGroupColor(minColor, maxColor, min, max, inputData[region.name] || 0, groups)
        }))
      }))
    }
@@ -73,7 +73,7 @@ export default function DataForm({min, max, minColor, maxColor}) {
         return {
         ...region,
         value: randomValue,
-        color: interpolateColor(minColor, maxColor, min, max, randomValue)
+        color: !grouped ? interpolateColor(minColor, maxColor, min, max, randomValue) : interpolateGroupColor(minColor, maxColor, min, max, randomValue, groups)
         }
       })
       }))

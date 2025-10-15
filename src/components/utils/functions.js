@@ -1,3 +1,14 @@
+//random number generator
+export function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+
+//-----------------------------------------------------------------------------
+//                Map color determination (continuous)
+//-----------------------------------------------------------------------------
+
 /**
  * Performs linear interpolation between two color values
  * @param {number|string} minColor - Minimum color value (number or hex color code)
@@ -68,30 +79,54 @@ function interpolateHexColor(minColor, maxColor, factor) {
   return `#${hexR}${hexG}${hexB}`;
 }
 
+//-----------------------------------------------------------------------------
+//                Map color determination (discrete)
+//-----------------------------------------------------------------------------
 /**
- * Example usage and test cases
+ * Performs discrete color interpolation by dividing the color scale into groups
+ * @param {string} minColor - Minimum hex color (e.g., '#000000')
+ * @param {string} maxColor - Maximum hex color (e.g., '#666666')
+ * @param {number} minValue - Minimum value in the range
+ * @param {number} maxValue - Maximum value in the range
+ * @param {number} currentValue - The value to map to a color
+ * @param {number} groups - Number of discrete color groups
+ * @returns {string} The discrete hex color corresponding to the value
  */
-export function testInterpolateColor() {
-  // Test with numeric values (your example)
-  console.log('Numeric interpolation test:');
-  console.log('Result:', interpolateColor(0, 100, 5, 10, 8)); // Should output 60
+export function interpolateGroupColor(minColor, maxColor, minValue, maxValue, currentValue, groups) {
+  // Handle edge cases
+  if (minValue === maxValue) {
+    return minColor;
+  }
   
-  // Test with negative values
-  console.log('Negative values test:');
-  console.log('Result:', interpolateColor(0, 100, -5, 10, 5)); // Should output ~66.67
-  console.log('Result:', interpolateColor(0, 100, -10, -5, -7)); // Should output 60
+  // Validate groups
+  groups = Math.max(1, Math.floor(groups));
   
-  // Test with hex colors
-  console.log('Hex color interpolation test:');
-  console.log('Result:', interpolateColor('#FF0000', '#0000FF', 0, 10, 5)); // Should be purple-ish
-  console.log('Result:', interpolateColor('#FF0000', '#0000FF', -5, 5, 0)); // Should be purple-ish
-}
-
-//random number generator
-export function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+  // Generate the discrete color palette
+  const colors = [];
+  for (let i = 0; i < groups; i++) {
+    const factor = groups === 1 ? 0 : i / (groups - 1); // 0 to 1
+    colors.push(interpolateHexColor(minColor, maxColor, factor));
+  }
+  
+  // Calculate the position of currentValue in the range (0 to 1)
+  const totalRange = maxValue - minValue;
+  const valueOffset = currentValue - minValue;
+  const position = valueOffset / totalRange;
+  
+  // Clamp position between 0 and 1
+  const clampedPosition = Math.max(0, Math.min(1, position));
+  
+  // Determine which color group the position falls into
+  // Each group occupies 1/groups of the range
+  const groupSize = 1 / groups;
+  let colorIndex = Math.floor(clampedPosition / groupSize);
+  
+  // Handle edge case where position is exactly 1.0
+  if (colorIndex >= groups) {
+    colorIndex = groups - 1;
+  }
+  
+  return colors[colorIndex];
 }
 
 //-----------------------------------------------------------------------------
@@ -129,3 +164,4 @@ export function groupColorScale(minColor, maxColor, groups) {
 
   return `linear-gradient(to top, ${stops.join(', ')})`;
 }
+
