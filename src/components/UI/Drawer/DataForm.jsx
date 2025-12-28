@@ -90,13 +90,13 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
           htmlFor="region-select"
           className="block text-sm font-medium text-gray-700 mb-2"
         >
-          Select Region Level
+          Region Level
         </label>
         <select
           id="region-select"
           value={regionLevel}
           onChange={(e) => setRegionLevel(e.target.value)}
-          className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="block w-[200px] px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
         >
           <option value="L1">Province</option>
           <option value="L2">District</option>
@@ -121,7 +121,7 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
               value={inputData[region.name] || ''}
               onChange={(e) => handleInputChange(region.name, e.target.value)}
               placeholder="Enter value"
-              className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
+              className="block w-[200px] px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
             />
           </div>
         ))}

@@ -3,20 +3,21 @@ import { Bar } from '@visx/shape';
 import { Group } from '@visx/group';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { useMap } from '../../context/MapContext';
+import { lightGrey } from '../../utils/constants';
 
 export default function Chart() {
 
   const width = 150;
   const height = 500;
-  const margin = { top: 20, right: 10, bottom: 20, left: 60 };
+  const margin = { top: 20, right: 10, bottom: 20, left: 80 };
 
   const [data, setData] = React.useState([]);
   const { regionData, regionLevel} = useMap()
 
   // Update data when regionData or regionLevel changes
   React.useEffect(() => {
-    if (regionData && regionData[regionLevel]) {
-      const currentRegionData = regionData[regionLevel];
+    if (regionData ) {
+      const currentRegionData = regionData;
       // Sort by value in descending order
       const sortedData = [...currentRegionData].sort((a, b) => b.value - a.value);
       setData(sortedData);
@@ -57,7 +58,7 @@ export default function Chart() {
                   y={barY}
                   width={barWidth}
                   height={barHeight}
-                  fill={d.color}
+                  fill={d.value == 0 ? lightGrey : d.color} // Grey color for zero values
                   rx={2}
                 />
                 {/* Y-axis name (smaller font) */}

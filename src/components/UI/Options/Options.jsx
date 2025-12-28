@@ -2,14 +2,15 @@ import React from 'react'
 import mapIcon from '../../../assets/icons/map.png'
 import { useMap } from '../../context/MapContext'
 import Drawerbutton from './Optionbutton'
+import { lightGrey } from '../../utils/constants'
 
 export default function Options() {
   const { showTileLayer, toggleTileLayer } = useMap()
 
   return (
     <div 
-    className="h-screen bg-white border-r border-gray-300 shadow-lg "
-    style={{ width: '50px' }}
+    className="h-screen border-r border-gray-300 shadow-lg "
+    style={{ width: '50px', backgroundColor: lightGrey }}
     >
     {/* Content for the left floating element can be added here */}
     <Drawerbutton

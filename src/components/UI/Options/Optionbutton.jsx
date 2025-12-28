@@ -1,4 +1,5 @@
 import React from 'react'
+import { activeLightGrey, lightGrey } from '../../utils/constants'
 
 export default function Optionbutton({ 
   imageSrc, 
@@ -12,8 +13,8 @@ return (
     <button 
         className={`w-10 h-10 m-1 border-none cursor-pointer transition-colors rounded ${
             isActive 
-                ? 'bg-grey-100 border border-grey-300' 
-                : 'bg-white hover:bg-gray-50'
+                ? `bg-[${activeLightGrey}]`
+                : `bg-[${lightGrey}] hover:bg-[${activeLightGrey}]`
         } ${className}`}
         style={{ 
             backgroundImage: `url(${imageSrc})`,

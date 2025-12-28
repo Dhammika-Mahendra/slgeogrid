@@ -2,6 +2,7 @@ import React from 'react'
 import DataForm from './DataForm'
 import ColorScale from './ColorScale'
 import Chart from './Chart'
+import { lightGrey } from '../../utils/constants'
 
 export default function Drawer() {
 
@@ -17,9 +18,13 @@ export default function Drawer() {
   )
 
   return (
-      <div className="w-full h-screen bg-gray-50 border-l border-gray-300 shadow-lg p-4 flex overflow-hidden">
-        <ColorScale colorScale={colorScale} setColorScale={setColorScale} />
-        <Chart />
+      <div className="w-full h-screen border-l border-gray-300 shadow-lg p-4 flex justify-between overflow-hidden"
+        style={{backgroundColor:lightGrey}}
+      >
+      <div className="flex">
+          <ColorScale colorScale={colorScale} setColorScale={setColorScale} />
+          <Chart />
+      </div>
         <DataForm min={colorScale.minValue} max={colorScale.maxValue} minColor={colorScale.minColor} maxColor={colorScale.maxColor} grouped={colorScale.grouped} groups={colorScale.groups} />
       </div>
   )

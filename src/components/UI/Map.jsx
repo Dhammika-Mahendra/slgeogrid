@@ -14,25 +14,42 @@ export default function Map() {
   const { showTileLayer, regionLevel, regionData, setRegionData } = useMap()
 
   // Initialize regionData (where data is stored) with objects from the GeoJSON files
-  useEffect(() => {
-    const initializedRegionData = L2Data.features.map(feature => ({
+  const getRegionalDataObject = (level) => {
+    let data = []
+    if (level === 'L1') {
+      data = L1Data.features.map(feature => ({
         name: feature.properties.name,
         value: 0,
         color: "#FFFFFF"
-      }));
-    
-    setRegionData(initializedRegionData);
+      }))
+    }else if (level === 'L2') {
+      data = L2Data.features.map(feature => ({
+        name: feature.properties.name,
+        value: 0,
+        color: "#FFFFFF"
+      }))
+    }else if (level === 'L3') {
+      data = L3Data.features.map(feature => ({
+        name: feature.properties.name,
+        value: 0,
+        color: "#FFFFFF"
+      }))
+    }
+    return data
+  }
+
+  useEffect(() => {
+    setRegionData(getRegionalDataObject(regionLevel));
   }, []);
   
-
   useEffect(() => {
     // Only initialize the map when regionData is loaded and not empty
     if (!mapInstanceRef.current && regionData && Object.keys(regionData).length > 0) {
-      console.log("Initializing map with regionData:", regionData)
       // Create the map instance
       mapInstanceRef.current = L.map(mapRef.current, {
         center: [7.8731, 80.7718], // Center of Sri Lanka
-        zoom: 10,
+        zoom: 7.8,
+        zoomSnap: 0.25,
         zoomControl: false, // Remove zoom control buttons
         dragging: true,
         touchZoom: true,
@@ -74,8 +91,8 @@ export default function Map() {
       }).addTo(mapInstanceRef.current)
 
       // Fit the map to the bounds of the GeoJSON data
-      const bounds = L.geoJSON(currentGeoData).getBounds()
-      mapInstanceRef.current.fitBounds(bounds)
+      // const bounds = L.geoJSON(currentGeoData).getBounds()
+      // mapInstanceRef.current.fitBounds(bounds)
     }
   }, [regionData])
 
@@ -95,6 +112,7 @@ export default function Map() {
     if (!mapInstanceRef.current || !geoJSONLayerRef.current) return
 
     // Get the new GeoJSON data based on the region level
+    setRegionData(getRegionalDataObject(regionLevel));
     const newGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
     const currentRegionData = regionData || []
 
