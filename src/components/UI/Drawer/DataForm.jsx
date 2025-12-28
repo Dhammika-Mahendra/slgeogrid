@@ -17,14 +17,14 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 
   // Update local input data when regionLevel or regionData changes
    useEffect(() => {
-     if (regionData[regionLevel]) {
+     if (regionData) {
        const initialData = {}
-       regionData[regionLevel].forEach((region) => {
+       regionData.forEach((region) => {
          initialData[region.name] = region.value
        })
        setInputData(initialData)
      }
-   }, [regionLevel, regionData])
+   }, [regionData])
 
   // Handle input changes
    const handleInputChange = (name, value) => {
@@ -38,47 +38,48 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
   //     Button Handlers
   //--------------------------------------------------------
    const handleSubmit = () => {
-     setRegionData(prevRegionData => ({
-       ...prevRegionData,
-       [regionLevel]: prevRegionData[regionLevel].map(region => ({
-         ...region,
-         value: inputData[region.name] || 0,
-         color: !grouped ? interpolateColor(minColor, maxColor, min, max, inputData[region.name] || 0) : interpolateGroupColor(minColor, maxColor, min, max, inputData[region.name] || 0, groups)
-       }))
-     }))
-   }
+  setRegionData(prevRegionData =>
+    prevRegionData.map(region => ({
+      ...region,
+      value: inputData[region.name] || 0,
+      color: !grouped
+        ? interpolateColor(minColor, maxColor, min, max, inputData[region.name] || 0)
+        : interpolateGroupColor(minColor, maxColor, min, max, inputData[region.name] || 0, groups)
+    }))
+  )
+}
 
    const handleClear = () => {
     setIsVisible(true)
     setMsg("Are you sure you want to clear all data?")
     setFunctionExec(()=>()=>
-      setRegionData(prevRegionData => ({
-       ...prevRegionData,
-       [regionLevel]: prevRegionData[regionLevel].map(region => ({
-         ...region,
-         value: 0
-       }))
-     }))
+      setRegionData(prevRegionData =>
+        prevRegionData.map(region => ({
+          ...region,
+          value: 0
+        }))
+      )
     )
    }
 
-   const handleRandom = () => {
-    setIsVisible(true)
-    setMsg("Are you sure you want to fill random data?")
-    setFunctionExec(()=>()=>
-      setRegionData(prevRegionData => ({
-      ...prevRegionData,
-      [regionLevel]: prevRegionData[regionLevel].map(region => {
+  const handleRandom = () => {
+  setIsVisible(true)
+  setMsg("Are you sure you want to fill random data?")
+  setFunctionExec(() => () =>
+    setRegionData(prevRegionData =>
+      prevRegionData.map(region => {
         const randomValue = getRandomInt(min, max)
         return {
-        ...region,
-        value: randomValue,
-        color: !grouped ? interpolateColor(minColor, maxColor, min, max, randomValue) : interpolateGroupColor(minColor, maxColor, min, max, randomValue, groups)
+          ...region,
+          value: randomValue,
+          color: !grouped
+            ? interpolateColor(minColor, maxColor, min, max, randomValue)
+            : interpolateGroupColor(minColor, maxColor, min, max, randomValue, groups)
         }
       })
-      }))
     )
-   }
+  )
+}
 
   return (
     <div className="w-[50%] h-full flex flex-col">
@@ -106,7 +107,7 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 
       {/* Region data input fields */}
       <div className="space-y-3 flex-grow overflow-y-auto">
-        {regionData[regionLevel]?.map((region, index) => (
+        {regionData.map((region, index) => (
           <div key={region.name} className="flex flex-col">
             <label 
               htmlFor={`region-${region.name}`}

@@ -17,7 +17,7 @@ export const useMap = () => {
 export const MapProvider = ({ children }) => {
   const [showTileLayer, setShowTileLayer] = useState(false)
   const [regionLevel, setRegionLevel] = useState('L2')
-  const [regionData, setRegionData] = useState({})
+  const [regionData, setRegionData] = useState([])
   
   
   const toggleTileLayer = () => {

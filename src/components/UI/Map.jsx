@@ -15,23 +15,11 @@ export default function Map() {
 
   // Initialize regionData (where data is stored) with objects from the GeoJSON files
   useEffect(() => {
-    const initializedRegionData = {
-      'L1': L1Data.features.map(feature => ({
+    const initializedRegionData = L2Data.features.map(feature => ({
         name: feature.properties.name,
         value: 0,
         color: "#FFFFFF"
-      })),
-      'L2': L2Data.features.map(feature => ({
-        name: feature.properties.name,
-        value: 0,
-        color: "#FFFFFF"
-      })),
-      'L3': L3Data.features.map(feature => ({
-        name: feature.properties.name,
-        value: 0,
-        color: "#FFFFFF"
-      }))
-    };
+      }));
     
     setRegionData(initializedRegionData);
   }, []);
@@ -40,6 +28,7 @@ export default function Map() {
   useEffect(() => {
     // Only initialize the map when regionData is loaded and not empty
     if (!mapInstanceRef.current && regionData && Object.keys(regionData).length > 0) {
+      console.log("Initializing map with regionData:", regionData)
       // Create the map instance
       mapInstanceRef.current = L.map(mapRef.current, {
         center: [7.8731, 80.7718], // Center of Sri Lanka
@@ -65,7 +54,7 @@ export default function Map() {
 
       // Initialize the map with the current region level
       const currentGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
-      const currentRegionData = regionData[regionLevel] || []
+      const currentRegionData = regionData|| []
       
 
       geoJSONLayerRef.current = L.geoJSON(currentGeoData, {
@@ -107,7 +96,7 @@ export default function Map() {
 
     // Get the new GeoJSON data based on the region level
     const newGeoData = regionLevel === 'L1' ? L1Data : regionLevel === 'L2' ? L2Data : L3Data
-    const currentRegionData = regionData[regionLevel] || []
+    const currentRegionData = regionData || []
 
     // Update the GeoJSON layer with new data
     geoJSONLayerRef.current.clearLayers()
@@ -138,7 +127,7 @@ export default function Map() {
   useEffect(() => {
     if (!mapInstanceRef.current || !geoJSONLayerRef.current) return
 
-    const currentRegionData = regionData[regionLevel] || []
+    const currentRegionData = regionData|| []
     
     // Update only the styling when regionData changes
     geoJSONLayerRef.current.eachLayer((layer) => {
