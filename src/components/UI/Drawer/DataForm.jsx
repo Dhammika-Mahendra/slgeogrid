@@ -2,6 +2,7 @@ import { useMap } from '../../context/MapContext'
 import { useState, useEffect } from 'react'
 import AlertBox from '../common/AlertBox'
 import { getRandomInt, interpolateColor, interpolateGroupColor } from '../../utils/functions'
+import { activeLightGrey } from '../../utils/constants'
 
 export default function DataForm({min, max, minColor, maxColor, grouped, groups}) {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
@@ -82,36 +83,38 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 }
 
   return (
-    <div className="w-[50%] h-full flex flex-col">
-
+    <>
     { /* Region level selction dropdown*/}
-      <div className="mb-4">
-        <label 
-          htmlFor="region-select"
-          className="block text-sm font-medium text-gray-700 mb-2"
-        >
-          Region Level
-        </label>
-        <select
-          id="region-select"
-          value={regionLevel}
-          onChange={(e) => setRegionLevel(e.target.value)}
-          className="block w-[200px] px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-        >
-          <option value="L1">Province</option>
-          <option value="L2">District</option>
-          <option value="L3">Secretariat</option>
-        </select>
-      </div>
+    <div >
+      <select
+        id="region-select"
+        value={regionLevel}
+        onChange={(e) => setRegionLevel(e.target.value)}
+        className={`block w-[100px] px-1 py-1 border border-gray-300 rounded-md focus:outline-none transition-colors`}
+        style={{position:'absolute', left:'40%', top:'10px', zIndex:'1000'}}
+      >
+        <option value="L1">Province</option>
+        <option value="L2">District</option>
+        <option value="L3">Secretariat</option>
+      </select>
+    </div>
 
+
+    <div className="w-[50%] h-full flex flex-col justify-between">
 
       {/* Region data input fields */}
-      <div className="space-y-3 flex-grow overflow-y-auto">
+      <div
+        style={{ 
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+        }}
+      >
         {regionData.map((region, index) => (
-          <div key={region.name} className="flex flex-col">
+          <div key={region.name} className="flex flex-col mr-[10px]"> 
             <label 
               htmlFor={`region-${region.name}`}
-              className="block text-xs font-medium text-gray-600 mb-1"
+              className="block text-xs font-medium text-gray-600"
             >
               {region.name}
             </label>
@@ -120,8 +123,7 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
               type="number"
               value={inputData[region.name] || ''}
               onChange={(e) => handleInputChange(region.name, e.target.value)}
-              placeholder="Enter value"
-              className="block w-[200px] px-2 py-1 text-sm border border-gray-300 rounded-md focus:outline-none transition-colors"
+              className="block w-[130px] px-2 text-sm border border-gray-300 rounded focus:outline-none transition-colors"
             />
           </div>
         ))}
@@ -130,7 +132,7 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 
       {/* Button Panel */}
       <div className="p-4 flex-shrink-0">
-        <div className="flex gap-3 justify-end">
+        <div className="flex gap-3 justify-center">
           <button className="btn btn-sm btn-soft px-4"
             onClick={handleClear}>
             Clear
@@ -152,8 +154,8 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
           <AlertBox isVisible={isVisible} setIsVisible={setIsVisible} msg={msg} functionExec={functionExec} />
         </div>
       </div>
-
-
     </div>
+    </>
+
   )
 }

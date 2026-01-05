@@ -21,10 +21,10 @@ export default function Drawer() {
       <div className="w-full h-screen border-l border-gray-300 shadow-lg p-4 flex justify-between overflow-hidden"
         style={{backgroundColor:lightGrey}}
       >
-      <div className="flex">
-          <ColorScale colorScale={colorScale} setColorScale={setColorScale} />
-          <Chart />
-      </div>
+        <div className="flex">
+            <ColorScale colorScale={colorScale} setColorScale={setColorScale} />
+            <Chart />
+        </div>
         <DataForm min={colorScale.minValue} max={colorScale.maxValue} minColor={colorScale.minColor} maxColor={colorScale.maxColor} grouped={colorScale.grouped} groups={colorScale.groups} />
       </div>
   )
