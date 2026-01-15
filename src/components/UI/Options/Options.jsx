@@ -1,8 +1,8 @@
 import React from 'react'
 import mapIcon from '../../../assets/icons/map.png'
 import { useMap } from '../../context/MapContext'
-import Drawerbutton from './Optionbutton'
 import { lightGrey } from '../../utils/constants'
+import Optionbutton from './Optionbutton'
 
 export default function Options() {
   const { showTileLayer, toggleTileLayer } = useMap()
@@ -10,16 +10,15 @@ export default function Options() {
   return (
     <div 
     className="h-screen border-r border-gray-300 shadow-lg "
-    style={{ width: '50px', backgroundColor: lightGrey }}
+    style={{ width: '50px', backgroundColor: lightGrey, hover: lightGrey }}
     >
     {/* Content for the left floating element can be added here */}
-    <Drawerbutton
+    <Optionbutton
       imageSrc={mapIcon}
       altText="Toggle Base Map"
       isActive={showTileLayer}
       onClick={toggleTileLayer}
       tooltip={showTileLayer ? 'Hide Base Map' : 'Show Base Map'}
-      className="w-7 h-7"
     />
 
     </div>

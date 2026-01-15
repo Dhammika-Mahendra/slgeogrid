@@ -57,7 +57,8 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
       setRegionData(prevRegionData =>
         prevRegionData.map(region => ({
           ...region,
-          value: 0
+          value: 0,
+          color: "#FFFFFF"
         }))
       )
     )
