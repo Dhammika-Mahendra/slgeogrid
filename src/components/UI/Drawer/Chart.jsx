@@ -43,7 +43,10 @@ export default function Chart() {
 
   return (
     <div>
-      <svg width={width} height={height}>
+
+      {
+        regionLevel == 'L2'|| regionLevel == 'L1'?
+        <svg width={width} height={height}>
         <Group left={margin.left} top={margin.top}>
           {data.map((d, i) => {
             const barHeight = 10; // Fixed bar width (thickness) of 10px
@@ -76,7 +79,8 @@ export default function Chart() {
             );
           })}
         </Group>
-      </svg>
+      </svg>:''
+      }
     </div>
   );
 }

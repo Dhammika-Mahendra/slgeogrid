@@ -49,9 +49,9 @@ export default function AlertBox({isVisible, setIsVisible,msg,functionExec}) {
                         }}
                     >
                         <p>{msg}</p>
-                        <div>
-                            <button className="btn btn-sm btn-warning px-4" onClick={handleYesClick}>Yes</button>
-                            <button className="btn btn-sm btn-soft px-4" onClick={hideAlert}>No</button>
+                        <div className="flex justify-center space-between mt-2">
+                            <button className="btn btn-sm btn-soft px-4  mr-8" onClick={hideAlert}>No</button>
+                            <button className="btn btn-sm btn-neutral px-4" onClick={handleYesClick}>Yes</button>
                         </div>
                     </div>
                 </div>

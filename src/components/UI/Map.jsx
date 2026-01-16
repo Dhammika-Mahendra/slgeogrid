@@ -31,6 +31,7 @@ export default function Map() {
     }else if (level === 'L3') {
       data = L3Data.features.map(feature => ({
         name: feature.properties.name,
+        district: feature.properties.L2,
         value: 0,
         color: "#FFFFFF"
       }))
