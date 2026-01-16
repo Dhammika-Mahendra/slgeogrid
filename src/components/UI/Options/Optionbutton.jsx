@@ -9,21 +9,20 @@ export default function Optionbutton({
   tooltip
 }) {
 return (
-    <button 
-        className={`w-9 h-9 m-1 border-none cursor-pointer rounded`}
-        style={{ 
-            backgroundImage: `url(${imageSrc})`,
-            backgroundSize: '60%',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundColor: isActive ? activeLightGrey : lightGrey,
-        }} 
-        onClick={onClick}
-        title={tooltip}
-        aria-label={altText}
-    >
-        {/* Optional: Add screen reader text */}
-        <span className="sr-only">{altText}</span>
-    </button>
+    <>
+        <button className="btn btn-square"
+            onClick={onClick}
+            title={tooltip}
+            style={{
+                backgroundColor: isActive ? activeLightGrey : lightGrey,
+                margin:'2px'
+            }}
+        >
+        <svg class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.005 11.19V12l6.998 4.042L19 12v-.81M5 16.15v.81L11.997 21l6.998-4.042v-.81M12.003 3 5.005 7.042l6.998 4.042L19 7.042 12.003 3Z"/>
+        </svg>
+            <span className="sr-only">{altText}</span>
+        </button> 
+    </>
 )
 }

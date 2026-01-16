@@ -85,52 +85,57 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 
   return (
     <>
-    { /* Region level selction dropdown*/}
-    <div >
-      <select
-        id="region-select"
-        value={regionLevel}
-        onChange={(e) => setRegionLevel(e.target.value)}
-        className={`block w-[100px] px-1 py-1 border border-gray-300 rounded-md focus:outline-none transition-colors`}
-        style={{position:'absolute', left:'40%', top:'10px', zIndex:'1000'}}
-      >
-        <option value="L1">Province</option>
-        <option value="L2">District</option>
-        <option value="L3">Secretariat</option>
-      </select>
-    </div>
+    <div className="w-[60%] h-full flex flex-col justify-between">
 
+    {/*---------------------------------------------------------------- */}
+    {/* Region data input fields */}
 
-    <div className="w-[50%] h-full flex flex-col justify-between">
-
-      {/* Region data input fields */}
       <div
-        style={{ 
-          display: 'flex',
-          flexWrap: 'wrap',
-          flexDirection: 'row',
-        }}
+        className="grid grid-cols-3 gap-x-4 gap-y-2 rounded border border-gray-200 p-2"
+        style={{ minHeight: '400px' }}
       >
-        {regionData.map((region, index) => (
-          <div key={region.name} className="flex flex-col mr-[10px]"> 
-            <label 
-              htmlFor={`region-${region.name}`}
-              className="block text-xs font-medium text-gray-600"
-            >
-              {region.name}
-            </label>
-            <input
-              id={`region-${region.name}`}
-              type="number"
-              value={inputData[region.name] || ''}
-              onChange={(e) => handleInputChange(region.name, e.target.value)}
-              className="block w-[130px] px-2 text-sm border border-gray-300 rounded focus:outline-none transition-colors"
-            />
+        {/* 9, 9, 7 vertical columns */}
+        {[0, 1, 2].map(col => (
+          <div key={col} className="flex flex-col gap-y-2">
+            {regionData
+              .slice(col === 0 ? 0 : col === 1 ? 9 : 18, col === 0 ? 9 : col === 1 ? 18 : 25)
+              .map((region, idx) => (
+                <div key={region.name} className="flex flex-col">
+                  <label
+                    htmlFor={`region-${region.name}`}
+                    className="block text-sm text-gray-600"
+                  >
+                    {region.name}
+                  </label>
+                  <input
+                    id={`region-${region.name}`}
+                    type="number"
+                    value={inputData[region.name] || ''}
+                    onChange={(e) => handleInputChange(region.name, e.target.value)}
+                    className="block w-[100%] px-2 text-sm border border-gray-300 rounded focus:outline-none transition-colors"
+                  />
+                </div>
+              ))}
           </div>
         ))}
       </div>
 
+      { /* Region level selction dropdown*/}
+        <div >
+          <select
+            id="region-select"
+            value={regionLevel}
+            onChange={(e) => setRegionLevel(e.target.value)}
+            className={`block w-[100px] px-1 py-1 border border-gray-300 rounded-md focus:outline-none transition-colors`}
+            style={{position:'absolute', left:'40%', top:'10px', zIndex:'1000'}}
+          >
+            <option value="L1">Province</option>
+            <option value="L2">District</option>
+            <option value="L3">Secretariat</option>
+          </select>
+        </div>
 
+      {/* ---------------------------------------------------------------------------------- */}
       {/* Button Panel */}
       <div className="p-4 flex-shrink-0">
         <div className="flex gap-3 justify-center">
@@ -144,7 +149,7 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
             Random
           </button>
           <button 
-            className="btn btn-sm btn-success px-4"
+            className="btn btn-sm btn-success px-4 text-white"
             onClick={handleSubmit}
           >
             OK
