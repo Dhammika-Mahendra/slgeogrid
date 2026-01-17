@@ -12,6 +12,7 @@ export default function Chart() {
   const margin = { top: 20, right: 10, bottom: 20, left: 80 };
 
   const [data, setData] = React.useState([]);
+  const [valid, setValid] = React.useState(false);
   const { regionData, regionLevel} = useMap()
 
   // Update data when regionData or regionLevel changes
@@ -21,6 +22,12 @@ export default function Chart() {
       // Sort by value in descending order
       const sortedData = [...currentRegionData].sort((a, b) => b.value - a.value);
       setData(sortedData);
+    }
+    //check if regionData values are all zeros
+    if (regionData && regionData.every(region => region.value === 0)) {
+      setValid(false);
+    } else {  
+      setValid(true);
     }
   }, [regionData, regionLevel]);
 
@@ -42,7 +49,7 @@ export default function Chart() {
   });
 
   return (
-    <div>
+    <div style={{visibility: valid ? 'visible' : 'hidden' }}>
 
       {
         regionLevel == 'L2'|| regionLevel == 'L1'?

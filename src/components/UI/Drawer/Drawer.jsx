@@ -23,7 +23,7 @@ export default function Drawer() {
       >
       <DataForm min={colorScale.minValue} max={colorScale.maxValue} minColor={colorScale.minColor} maxColor={colorScale.maxColor} grouped={colorScale.grouped} groups={colorScale.groups} />
       <div className="flex">
-        <ColorScale colorScale={colorScale} setColorScale={setColorScale} />
+        <ColorScale colorScale={colorScale} setColorScale={setColorScale}/>
         <Chart />
       </div>
       </div>
