@@ -45,7 +45,8 @@ export default function AlertBox({isVisible, setIsVisible,msg,functionExec}) {
                             maxWidth: '400px',
                             width: '90%',
                             display: 'flex',
-                            flexDirection: 'column'
+                            flexDirection: 'column',
+                            alignItems: 'center'
                         }}
                     >
                         <p>{msg}</p>
