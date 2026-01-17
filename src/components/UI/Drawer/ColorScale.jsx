@@ -64,9 +64,9 @@ export default function ColorScale({colorScale, setColorScale}) {
 
             {/* Grouping options */}
             <div className='flex flex-col items-center mt-[25px]' 
-                style={{position:'absolute', top:'50%'}}
+                style={{position:'absolute', top:'40%', transform:'translateX(-40px)'}}
             >
-                <div>
+                <div className='flex flex-col items-center'>
                     <label htmlFor="grouped-checkbox" 
                         style={{fontSize:'10px', marginLeft:'5px', cursor: 'pointer'}}>
                             Grouped :
