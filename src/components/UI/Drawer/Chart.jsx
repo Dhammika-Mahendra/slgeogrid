@@ -49,7 +49,7 @@ export default function Chart() {
   });
 
   return (
-   <div className='rounded border border-gray-200 h-full'>
+   <div className='rounded border border-gray-200 h-full flex flex-col justify-center items-center'>
      <div style={{visibility: valid ? 'visible' : 'hidden' }}>
     
          <svg width={width} height={height}>
