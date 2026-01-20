@@ -12,7 +12,7 @@ export default function ColorScale({colorScale, setColorScale}) {
     }
 
     return (
-        <div style={{ height: '90%', marginRight:'20px', display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', position:'relative' }}>
+        <div style={{ height: '95%', marginRight:'20px', display: 'flex', flexDirection: 'column' , justifyContent: 'center', alignItems: 'center', position:'relative' }}>
 
             {/* Max value */}
             <input
@@ -64,33 +64,7 @@ export default function ColorScale({colorScale, setColorScale}) {
             />
 
             {/* Grouping options */}
-            <div className='flex flex-col items-center mt-[25px]' 
-                style={{position:'absolute', top:'40%', transform:'translateX(-40px)'}}
-            >
-                <Optionbutton 
-                    tooltip={colorScale.grouped ? 'Continuous Scale' : 'Grouped Scale'}
-                    icon={<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M15 4H9v16h6V4Zm2 16h3a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3v16ZM4 4h3v16H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" clip-rule="evenodd"/>
-                        </svg>
-                        }
-                    isActive={colorScale.grouped}
-                    onClick={() => updateColorScale('grouped', !colorScale.grouped)}
-                >
 
-                </Optionbutton>
-
-                {colorScale.grouped ?
-                <input
-                    type="number"
-                    value={colorScale.groups}
-                    onChange={(e) => updateColorScale('groups', parseInt(e.target.value) || 2)}
-                    style={{ width: '35px'}}
-                    className="block text-sm text-center border border-gray-300 rounded focus:outline-none transition-colors mt-[3px]"
-                    min={1}
-                />:
-                <br />
-                }
-            </div>
 
         </div>
     )

@@ -49,45 +49,47 @@ export default function Chart() {
   });
 
   return (
-    <div style={{visibility: valid ? 'visible' : 'hidden' }}>
-
-        <svg width={width} height={height}>
-        <Group left={margin.left} top={margin.top}>
-          {data.map((d, i) => {
-            const barHeight = regionLevel === 'L1' ? 40 : regionLevel === 'L2' ? 10 : 1;
-            const barWidth = xScale(d.value); // Length based on data value
-            const barY = yScale(d.name);
-            
-            return (
-              <Group key={`bar-${i}`}>
-                {/* Bar */}
-                <Bar
-                  x={0}
-                  y={barY}
-                  width={barWidth}
-                  height={barHeight}
-                  fill={d.value == 0 ? lightGrey : d.color} // Grey color for zero values
-                  rx={2}
-                />
-                {/* Y-axis name (smaller font) */}
-                {
-                  regionLevel !== 'L3' ? 
-                  <text
-                    x={-5}
-                    y={barY + barHeight / 2}
-                    dy="0.35em"
-                    textAnchor="end"
-                    fontSize="10px"
-                    fill="#374151"
-                  >
-                    {d.name}
-                  </text> : ''
-                }
-              </Group>
-            );
-          })}
-        </Group>
-      </svg>
-    </div>
+   <div className='rounded border border-gray-200 h-full'>
+     <div style={{visibility: valid ? 'visible' : 'hidden' }}>
+    
+         <svg width={width} height={height}>
+         <Group left={margin.left} top={margin.top}>
+           {data.map((d, i) => {
+             const barHeight = regionLevel === 'L1' ? 40 : regionLevel === 'L2' ? 10 : 1;
+             const barWidth = xScale(d.value); // Length based on data value
+             const barY = yScale(d.name);
+             
+             return (
+               <Group key={`bar-${i}`}>
+                 {/* Bar */}
+                 <Bar
+                   x={0}
+                   y={barY}
+                   width={barWidth}
+                   height={barHeight}
+                   fill={d.value == 0 ? lightGrey : d.color} // Grey color for zero values
+                   rx={2}
+                 />
+                 {/* Y-axis name (smaller font) */}
+                 {
+                   regionLevel !== 'L3' ? 
+                   <text
+                     x={-5}
+                     y={barY + barHeight / 2}
+                     dy="0.35em"
+                     textAnchor="end"
+                     fontSize="10px"
+                     fill="#374151"
+                   >
+                     {d.name}
+                   </text> : ''
+                 }
+               </Group>
+             );
+           })}
+         </Group>
+       </svg>
+     </div>
+   </div>
   );
 }

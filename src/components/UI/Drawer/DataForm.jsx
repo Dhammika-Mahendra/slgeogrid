@@ -4,7 +4,7 @@ import AlertBox from '../common/AlertBox'
 import { getRandomInt, interpolateColor, interpolateGroupColor } from '../../utils/functions'
 import { activeLightGrey } from '../../utils/constants'
 
-export default function DataForm({min, max, minColor, maxColor, grouped, groups}) {
+export default function DataForm({min, max, minColor, maxColor, grouped, groups,setColorScale}) {
    const { regionLevel, setRegionLevel, regionData, setRegionData } = useMap()
    const [inputData, setInputData] = useState({})
 
@@ -82,6 +82,13 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
     )
   )
 }
+
+  const updateColorScale = (field, value) => {
+      setColorScale(prev => ({
+          ...prev,
+          [field]: value
+      }))
+  }
 
   return (
     <>
@@ -174,16 +181,37 @@ export default function DataForm({min, max, minColor, maxColor, grouped, groups}
 
     {/* --------------------------------------------------------------------*/}
     {/* Button Panel */}
-    <div className="p-4 flex-shrink-0">
+    <div className="p-4 flex-shrink-0"
+      style={{position:'fixed', bottom:'10px', right:'10px'}}
+      >
 
       <div className="flex gap-3 justify-center">
-        <button className="btn btn-sm btn-soft px-4" onClick={handleClear}>
-          Clear
+        <button className="btn btn-sm btn-soft px-1 ml-[20px] w-[60px]" onClick={handleRandom}>
+          Import
         </button>
-        <button className="btn btn-sm btn-soft px-4" onClick={handleRandom}>
+        <button className="btn btn-sm btn-soft px-1 ml-[20px] w-[60px]" onClick={handleRandom}>
           Random
         </button>
-        <button className="btn btn-sm btn-neutral px-4" onClick={handleSubmit}>
+        <button className="btn btn-sm btn-soft px-1 ml-[20px] w-[60px]" onClick={handleClear}>
+          Clear
+        </button>
+
+        <div className='flex items-center ml-[200px] mr-[40px]'>
+          <button className="btn btn-sm btn-soft px-1 w-[60px]" 
+          onClick={() => updateColorScale('grouped', !grouped)}>
+            {grouped ? 'Ungroup' : 'Group'}
+          </button>
+          <input
+              type="number"
+              value={groups}
+              onChange={(e) => updateColorScale('groups', parseInt(e.target.value) || 2)}
+              style={{ width: '35px', visibility: grouped ? 'visible' : 'hidden' }}
+              className="block text-sm text-center border border-gray-300 rounded focus:outline-none transition-colors ml-[5px]"
+              min={1}
+          />
+        </div>
+
+        <button className="btn btn-sm btn-neutral px-1 ml-[20px] w-[80px]" onClick={handleSubmit}>
           OK
         </button>
 

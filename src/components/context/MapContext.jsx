@@ -16,6 +16,7 @@ export const useMap = () => {
 // Create the provider component
 export const MapProvider = ({ children }) => {
   const [showTileLayer, setShowTileLayer] = useState(false)
+  const [showLables, setShowLables] = useState(false)
   const [regionLevel, setRegionLevel] = useState('L2')
   const [regionData, setRegionData] = useState([])
   
@@ -24,10 +25,17 @@ export const MapProvider = ({ children }) => {
     setShowTileLayer(prev => !prev)
   }
 
+  const toggleLables = () => {
+    setShowLables(prev => !prev)
+  }
+
   const value = {
     showTileLayer,
     setShowTileLayer,
     toggleTileLayer,
+    showLables,
+    setShowLables,
+    toggleLables,
     regionLevel,
     setRegionLevel,
     regionData,

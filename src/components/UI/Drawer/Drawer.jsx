@@ -18,16 +18,22 @@ export default function Drawer() {
   )
 
   return (
-      <div className="w-full h-screen border-l border-gray-300 shadow-lg p-4 flex justify-between"
+      <div className="w-full h-screen border-l border-gray-300 shadow-lg p-4 flex flex-col"
         style={{backgroundColor:lightGrey}}
       >
-        <DataForm min={colorScale.minValue} max={colorScale.maxValue} minColor={colorScale.minColor} maxColor={colorScale.maxColor} grouped={colorScale.grouped} groups={colorScale.groups} />
-        
-        <div className="flex flex-row align-center items-center" style={{position:'relative', top:'-30px'}} >
-          <ColorScale colorScale={colorScale} setColorScale={setColorScale}/>
-          <Chart />
+
+        <div className='flex justify-between flex-grow items-center'>
+            <DataForm min={colorScale.minValue} max={colorScale.maxValue} 
+              minColor={colorScale.minColor} maxColor={colorScale.maxColor} 
+              grouped={colorScale.grouped} groups={colorScale.groups} 
+              setColorScale={setColorScale}
+              />
+            <ColorScale colorScale={colorScale} setColorScale={setColorScale}/>
+            <Chart />
         </div>
-      
+
+        <div className='h-[65px] w-full'></div>
+
       </div>
   )
 }
